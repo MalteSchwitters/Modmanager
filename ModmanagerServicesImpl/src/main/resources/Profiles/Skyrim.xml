@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<profile>
+	<game>Skyrim</game>
+	<installdir>D:\Steam\steamapps\common\Skyrim\</installdir>
+	<appdatadir>C:\Users\Malte\AppData\Local\Skyrim\</appdatadir>
+	<exe>TESV.exe</exe>
+	<modstore>http://www.nexusmods.com/Skyrim/?</modstore>
+	<comunity>http://forums.nexusmods.com/index.php?c=3485,3500</comunity>
+	<iconset>Default</iconset>
+	<background>background02.jpg</background>
+</profile>
