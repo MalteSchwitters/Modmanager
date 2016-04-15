@@ -2,6 +2,8 @@
 This modmanager enables you to manage your active plugins and loadorder for a few Bethesda games. Loadorder sorting via drag and drop is only enabled if the modlist is grouped by nothing and sorted by loadorder (default).
 Besides it offers you some useful shortcuts to start the game, open the installation folder or browse the web for community and new mods. These URLs are saved in a profile. 
 
+![sc_skyrim.JPG](https://bitbucket.org/repo/6kzgr6/images/2585981047-sc_skyrim.JPG)
+
 ## What this application **not** does ##
 This modmanager does not have any functionality to install mods. It's goal is to manage mods that are already installed. This does not mean that there will never be such a feature though.
 
