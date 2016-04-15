@@ -84,8 +84,8 @@ public class ModPopupMenu_pop_presenter extends AbstractPresenter {
 	private void showMoreMods() {
 		try {
 			StringBuilder stbURI = new StringBuilder();
-			stbURI.append("http://www.nexusmods.com/fallout4/mods/searchresults/?src_order");
-			stbURI.append("=2&src_sort=0&src_view=1&src_tab=1&src_language=0&src_auth=");
+			stbURI.append("http://www.nexusmods.com/games/mods/searchresults/?src_order=2");
+			stbURI.append("&src_sort=0&src_view=1&src_tab=1&src_language=0&src_auth==");
 			stbURI.append(mod.getAuthor());
 			stbURI.append("&page=1&pUp=1");
 			String uri = stbURI.toString().replace(" ", "%20");
