@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<profile>
+	<installdir>C:\Program Files (x86)\Steam\steamapps\common\Fallout 4\</installdir>
+	<appdatadir>AppData\Local\Fallout4\</appdatadir>
+	<exe>Fallout4Launcher.exe</exe>
+	<modstore>http://www.nexusmods.com/fallout4/?</modstore>
+	<comunity>http://forums.nexusmods.com/index.php?c=3485,3500</comunity>
+	<iconset>Default</iconset>
+	<background>background01.jpg</background>
+</profile>
