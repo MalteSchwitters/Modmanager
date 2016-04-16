@@ -25,11 +25,11 @@ public class ComponentFactory {
 	private final Map<JComponent, String> mapTooltips = new HashMap<JComponent, String>();
 	private final Map<JComponent, String> mapTexts = new HashMap<JComponent, String>();
 	private Properties properties = new Properties();
-
+	
 	private ComponentFactory() {
 		changeLanguage(new Locale("en"));
 	}
-
+	
 	public void changeLanguage(final Locale language) {
 		loadPropertiesForLanguage(language.getLanguage().toLowerCase());
 		for (JComponent comp : mapTooltips.keySet()) {
@@ -40,7 +40,7 @@ public class ComponentFactory {
 			comp.repaint();
 		}
 	}
-
+	
 	private void loadPropertiesForLanguage(final String language) {
 		try {
 			String filename = "/Localisation/Strings_" + language + ".properties";
@@ -54,22 +54,22 @@ public class ComponentFactory {
 			loadPropertiesForLanguage("en");
 		}
 	}
-
+	
 	public String getString(final String key) {
 		String value = properties.getProperty(key);
 		return value != null ? value : key;
 	}
-	
+
 	public void updateText(final JComponent comp, final String text) {
 		mapTexts.put(comp, text);
 		updateComponentText(comp);
 	}
-
+	
 	public void updateTooltip(final JComponent comp, final String tooltip) {
 		mapTooltips.put(comp, tooltip);
 		updateComponentTooltip(comp);
 	}
-
+	
 	public void updateComponentTooltip(final JComponent comp) {
 		try {
 			Method meth = comp.getClass().getMethod("setTooltipText");
@@ -80,7 +80,7 @@ public class ComponentFactory {
 			// ignore
 		}
 	}
-
+	
 	public void updateComponentText(final JComponent comp) {
 		try {
 			Method method = comp.getClass().getMethod("setText", String.class);
@@ -92,18 +92,18 @@ public class ComponentFactory {
 			// ignore
 		}
 	}
-	
+
 	public static ComponentFactory getInstance() {
 		if (instance == null) {
 			instance = new ComponentFactory();
 		}
 		return instance;
 	}
-
+	
 	public static JButton createButton(final String text) {
 		return createButton(text, text);
 	}
-
+	
 	public static JButton createButton(final String text, final String tooltip) {
 		JButton btn = new JButton();
 		btn.setFont(Fonts.Medium.getFont());
@@ -117,14 +117,14 @@ public class ComponentFactory {
 		}
 		return btn;
 	}
-
+	
 	public static JButton createToolbarButton(final String tooltip) {
 		JButton btn = new JButton();
 		btn.setToolTipText(getInstance().getString(tooltip));
 		getInstance().mapTooltips.put(btn, tooltip);
 		return btn;
 	}
-
+	
 	public static JLabel createLabel(final String text) {
 		JLabel lbl = new JLabel();
 		lbl.setFont(Fonts.Medium.getFont());
@@ -132,15 +132,15 @@ public class ComponentFactory {
 		getInstance().mapTexts.put(lbl, text);
 		return lbl;
 	}
-
+	
 	public static JTextPane createTextpane(final String text) {
 		JTextPane tpn = new JTextPane();
 		tpn.setFont(Fonts.Medium.getFont());
-		tpn.setText(text);
+		tpn.setText(getInstance().getString(text));
 		getInstance().mapTexts.put(tpn, text);
 		return tpn;
 	}
-
+	
 	public static JMenuItem createMenuItem(final String text, final String tooltip) {
 		JMenuItem mni = new JMenuItem();
 		mni.setFont(Fonts.Medium.getFont());
@@ -154,7 +154,7 @@ public class ComponentFactory {
 		}
 		return mni;
 	}
-
+	
 	public static JCheckBox createCheckbox(final String text, final String tooltip) {
 		JCheckBox chkbox = new JCheckBox();
 		chkbox.setFont(Fonts.Medium.getFont());

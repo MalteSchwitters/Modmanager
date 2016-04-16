@@ -2,7 +2,9 @@ package com.modmanager.backend.impl;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,10 +24,9 @@ public class ProfileServiceImpl implements ProfileService {
 	
 	
 	private static final Logger logger = Logger.getLogger(ProfileServiceImpl.class);
-	private static final String ProfilePath = "/Profiles/";
-	private static final String DefaultsPath = "/Profiles/Defaults/";
 	private List<Profile> profiles;
 	private Profile activeProfile;
+	private String appPath;
 
 	@Override
 	public void setActiveProfile(final String name) {
@@ -63,7 +64,7 @@ public class ProfileServiceImpl implements ProfileService {
 		if (profiles == null) {
 			profiles = new ArrayList<Profile>();
 			try {
-				File profdir = new File(getClass().getResource(ProfilePath).toURI());
+				File profdir = new File(getAppPath() + "Profiles/");
 				for (File f : profdir.listFiles()) {
 					if (!f.isDirectory()) {
 						profiles.add(readProfile(f.getName()));
@@ -79,9 +80,8 @@ public class ProfileServiceImpl implements ProfileService {
 	}
 
 	private Profile readProfile(final String profile) {
-		String path = ProfilePath + profile;
 		try {
-			File f = new File(getClass().getResource(path.toString()).toURI());
+			File f = new File(getAppPath() + "Profiles/" + profile);
 			if (f.exists()) {
 				Element e = new SAXBuilder().build(f).getRootElement();
 				Profile p = new Profile();
@@ -120,7 +120,7 @@ public class ProfileServiceImpl implements ProfileService {
 			root.addContent(new Element("iconset").setText(profile.getIconset()));
 			root.addContent(new Element("background").setText(profile.getBackground()));
 			
-			File outdir = new File(getClass().getResource(ProfilePath).toURI());
+			File outdir = new File(getAppPath() + "Profiles/");
 			File outfile = new File(outdir.getPath() + "/" + profile.getProfileName() + ".xml");
 			outfile.createNewFile();
 			XMLOutputter xmlOutput = new XMLOutputter();
@@ -139,9 +139,11 @@ public class ProfileServiceImpl implements ProfileService {
 
 	@Override
 	public Profile createDefaultProfile(final Game game) {
-		String path = DefaultsPath + game.toString().replace(" ", "") + "Defaults.xml";
+		String path = getAppPath() + "Profiles/Defaults/" + game.toString().replace(" ", "")
+				+ "Defaults.xml";
+		System.out.println(path);
 		try {
-			File f = new File(Game.class.getResource(path.toString()).toURI());
+			File f = new File(path);
 			if (f.exists()) {
 				Profile profile = new Profile();
 				Element e = new SAXBuilder().build(f).getRootElement();
@@ -171,5 +173,20 @@ public class ProfileServiceImpl implements ProfileService {
 		p.setIconset("Default");
 		p.setBackground("Background01.jpg");
 		return p;
+	}
+	
+	private String getAppPath() {
+		if (appPath == null) {
+			try {
+				appPath = URLDecoder.decode(
+						ClassLoader.getSystemClassLoader().getResource(".").getPath(), "UFT-8");
+				appPath = appPath.substring(1);
+			}
+			catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return appPath;
 	}
 }

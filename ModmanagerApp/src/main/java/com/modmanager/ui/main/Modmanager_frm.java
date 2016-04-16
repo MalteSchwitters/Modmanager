@@ -54,11 +54,11 @@ public class Modmanager_frm extends JFrame {
 	private JMenuItem mniNewProfile;
 	private JButton btnBrowseComunity;
 	private JMenuItem mniDelete;
-
+	
 	public Modmanager_frm() {
 		initialize();
 	}
-
+	
 	private void initialize() {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setTitle("Fallout 4 Mod Manager");
@@ -69,7 +69,7 @@ public class Modmanager_frm extends JFrame {
 		setSize(UISettings.width, UISettings.higth);
 		setLocationRelativeTo(null);
 	}
-
+	
 	public JPanel getPnlMain() {
 		if (pnlMain == null) {
 			pnlMain = new JPanel();
@@ -86,7 +86,7 @@ public class Modmanager_frm extends JFrame {
 		}
 		return pnlMain;
 	}
-	
+
 	private JPanel getPnlBackground() {
 		if (pnlBackground == null) {
 			pnlBackground = new JPanel();
@@ -95,7 +95,7 @@ public class Modmanager_frm extends JFrame {
 		}
 		return pnlBackground;
 	}
-
+	
 	public JLabel getLblBackground() {
 		if (lblBackground == null) {
 			lblBackground = new JLabel();
@@ -105,7 +105,7 @@ public class Modmanager_frm extends JFrame {
 		}
 		return lblBackground;
 	}
-
+	
 	private TexturedPanel getPnlContent() {
 		if (pnlContent == null) {
 			pnlContent = new TexturedPanel();
@@ -117,7 +117,7 @@ public class Modmanager_frm extends JFrame {
 		}
 		return pnlContent;
 	}
-	
+
 	private TexturedPanel getPnlToolbar() {
 		if (pnlToolbar == null) {
 			pnlToolbar = new TexturedPanel();
@@ -147,7 +147,7 @@ public class Modmanager_frm extends JFrame {
 		}
 		return pnlToolbar;
 	}
-
+	
 	public JButton getBtnStartGame() {
 		if (btnStartGame == null) {
 			btnStartGame = ComponentFactory.createToolbarButton("tooltip.play");
@@ -157,7 +157,7 @@ public class Modmanager_frm extends JFrame {
 		}
 		return btnStartGame;
 	}
-
+	
 	public JButton getBtnOpenGameFolder() {
 		if (btnOpenGameFolder == null) {
 			btnOpenGameFolder = ComponentFactory.createToolbarButton("tooltip.folder");
@@ -167,7 +167,7 @@ public class Modmanager_frm extends JFrame {
 		}
 		return btnOpenGameFolder;
 	}
-
+	
 	public JButton getBtnBrowseNexusmods() {
 		if (btnBrowseNexusmods == null) {
 			btnBrowseNexusmods = ComponentFactory.createToolbarButton("tooltip.search");
@@ -177,7 +177,7 @@ public class Modmanager_frm extends JFrame {
 		}
 		return btnBrowseNexusmods;
 	}
-	
+
 	public JButton getBtnOptions() {
 		if (btnOptions == null) {
 			btnOptions = ComponentFactory.createToolbarButton("tooltip.settings");
@@ -187,7 +187,7 @@ public class Modmanager_frm extends JFrame {
 		}
 		return btnOptions;
 	}
-	
+
 	public JPopupMenu getPopModmanager() {
 		if (popModmanager == null) {
 			popModmanager = new JPopupMenu();
@@ -198,7 +198,7 @@ public class Modmanager_frm extends JFrame {
 		}
 		return popModmanager;
 	}
-	
+
 	private static void addPopup(final Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {
 			
@@ -209,41 +209,41 @@ public class Modmanager_frm extends JFrame {
 					showMenu(e);
 				}
 			}
-			
+
 			@Override
 			public void mouseReleased(final MouseEvent e) {
 				if (e.isPopupTrigger()) {
 					showMenu(e);
 				}
 			}
-			
+
 			private void showMenu(final MouseEvent e) {
 				popup.show(e.getComponent(), e.getX(), e.getY());
 			}
 		});
 	}
-	
+
 	public JMenuItem getMniBackground() {
 		if (mniBackground == null) {
 			mniBackground = ComponentFactory.createMenuItem("change_background", null);
 		}
 		return mniBackground;
 	}
-	
+
 	public JMenuItem getMniPlay() {
 		if (mniPlay == null) {
 			mniPlay = ComponentFactory.createMenuItem("play_game", null);
 		}
 		return mniPlay;
 	}
-	
+
 	public JMenuItem getMniInstall() {
 		if (mniInstall == null) {
 			mniInstall = ComponentFactory.createMenuItem("install_mod", null);
 		}
 		return mniInstall;
 	}
-
+	
 	public JPanel getPnlView() {
 		if (pnlView == null) {
 			pnlView = new JPanel();
@@ -252,7 +252,7 @@ public class Modmanager_frm extends JFrame {
 		}
 		return pnlView;
 	}
-	
+
 	public JButton getBtnRefresh() {
 		if (btnRefresh == null) {
 			btnRefresh = ComponentFactory.createToolbarButton("tooltip.refresh");
@@ -262,7 +262,7 @@ public class Modmanager_frm extends JFrame {
 		}
 		return btnRefresh;
 	}
-	
+
 	public JButton getBtnChangeProfile() {
 		if (btnChangeProfile == null) {
 			btnChangeProfile = ComponentFactory.createToolbarButton("tooltip.changeprofile");
@@ -270,18 +270,18 @@ public class Modmanager_frm extends JFrame {
 			btnChangeProfile.setHorizontalAlignment(SwingConstants.LEFT);
 			btnChangeProfile.setHorizontalTextPosition(SwingConstants.LEADING);
 			btnChangeProfile.setMargin(new Insets(0, 0, 0, 0));
-			btnChangeProfile.setText("Profilename");
+			btnChangeProfile.setText("New Profile");
 			btnChangeProfile.setFont(Fonts.Medium.getFont());
 			btnChangeProfile.setForeground(Color.ORANGE);
 			btnChangeProfile.setIconTextGap(0);
 			btnChangeProfile.setBorder(null);
 			btnChangeProfile.setOpaque(false);
-			btnChangeProfile.setIcon(IconSet.getDarkIcon("down.png", 16));
-			btnChangeProfile.setRolloverIcon(IconSet.getRolloverIcon("down.png", 16));
+			btnChangeProfile.setIcon(IconSet.getSetDarkIcon("down.png", 16));
+			btnChangeProfile.setRolloverIcon(IconSet.getSetRolloverIcon("down.png", 16));
 		}
 		return btnChangeProfile;
 	}
-	
+
 	private JLabel getLblCurrentProfile() {
 		if (lblCurrentProfile == null) {
 			lblCurrentProfile = ComponentFactory.createLabel("current_profile");
@@ -289,7 +289,7 @@ public class Modmanager_frm extends JFrame {
 		}
 		return lblCurrentProfile;
 	}
-
+	
 	public JPopupMenu getPopChangeProfile() {
 		if (popChangeProfile == null) {
 			popChangeProfile = new JPopupMenu();
@@ -297,14 +297,14 @@ public class Modmanager_frm extends JFrame {
 		}
 		return popChangeProfile;
 	}
-	
+
 	public JMenuItem getMniNewProfile() {
 		if (mniNewProfile == null) {
 			mniNewProfile = ComponentFactory.createMenuItem("create_profile", null);
 		}
 		return mniNewProfile;
 	}
-	
+
 	public JButton getBtnBrowseComunity() {
 		if (btnBrowseComunity == null) {
 			btnBrowseComunity = ComponentFactory.createToolbarButton("tooltip.comunity");
@@ -314,7 +314,7 @@ public class Modmanager_frm extends JFrame {
 		}
 		return btnBrowseComunity;
 	}
-	
+
 	public JMenuItem getMniDelete() {
 		if (mniDelete == null) {
 			mniDelete = ComponentFactory.createMenuItem("delete_profile", null);

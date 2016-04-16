@@ -203,8 +203,8 @@ public class Modlist_pnl extends JPanel {
 			btnGroupBy.setBorder(null);
 			btnGroupBy.setUI(new BasicButtonUI());
 			btnGroupBy.setOpaque(false);
-			btnGroupBy.setIcon(IconSet.getDarkIcon("down.png", 16));
-			btnGroupBy.setRolloverIcon(IconSet.getRolloverIcon("down.png", 16));
+			btnGroupBy.setIcon(IconSet.getSetDarkIcon("down.png", 16));
+			btnGroupBy.setRolloverIcon(IconSet.getSetRolloverIcon("down.png", 16));
 		}
 		return btnGroupBy;
 	}

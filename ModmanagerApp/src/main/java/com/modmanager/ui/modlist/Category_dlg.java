@@ -2,7 +2,6 @@ package com.modmanager.ui.modlist;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.Window;
 
 import javax.swing.DefaultListCellRenderer;
@@ -35,16 +34,16 @@ public class Category_dlg extends JDialog {
 	private JTextPane tpnMessageUpper;
 	private JTextPane tpnMessageLower;
 	private JScrollPane scrollPane;
-
+	
 	public Category_dlg() {
 		initialize();
 	}
-	
+
 	public Category_dlg(final Window owner) {
 		super(owner);
 		initialize();
 	}
-	
+
 	private void initialize() {
 		setTitle("Set mod category");
 		setSize(374, 381);
@@ -52,7 +51,7 @@ public class Category_dlg extends JDialog {
 		getContentPane().add(getPnlButtons(), BorderLayout.SOUTH);
 		getContentPane().add(getPnlContent(), BorderLayout.CENTER);
 	}
-	
+
 	private JPanel getPnlButtons() {
 		if (pnlButtons == null) {
 			pnlButtons = new JPanel();
@@ -64,21 +63,21 @@ public class Category_dlg extends JDialog {
 		}
 		return pnlButtons;
 	}
-
+	
 	public JButton getBtnSave() {
 		if (btnSave == null) {
 			btnSave = ComponentFactory.createButton("save");
 		}
 		return btnSave;
 	}
-
+	
 	public JButton getBtnCancel() {
 		if (btnCancel == null) {
 			btnCancel = ComponentFactory.createButton("cancel");
 		}
 		return btnCancel;
 	}
-	
+
 	private JPanel getPnlContent() {
 		if (pnlContent == null) {
 			pnlContent = new JPanel();
@@ -97,7 +96,7 @@ public class Category_dlg extends JDialog {
 		}
 		return pnlContent;
 	}
-	
+
 	public JList<String> getLstCategories() {
 		if (lstCategories == null) {
 			lstCategories = new JList<String>();
@@ -108,7 +107,7 @@ public class Category_dlg extends JDialog {
 		}
 		return lstCategories;
 	}
-
+	
 	public JTextField getTxfNewCategory() {
 		if (txfNewCategory == null) {
 			txfNewCategory = new JTextField();
@@ -117,32 +116,28 @@ public class Category_dlg extends JDialog {
 		}
 		return txfNewCategory;
 	}
-	
-	private JTextPane getTpnMessageUpper() {
+
+	public JTextPane getTpnMessageUpper() {
 		if (tpnMessageUpper == null) {
 			tpnMessageUpper = new JTextPane();
 			tpnMessageUpper.setBorder(null);
 			tpnMessageUpper.setOpaque(false);
-			tpnMessageUpper.setText(
-					"Select a category for the mod {modname}. Each mod can only be in one category at the same time. You can either choose an already existing category...");
 			tpnMessageUpper.setEditable(false);
 			tpnMessageUpper.setFont(Fonts.Medium.getFont());
 		}
 		return tpnMessageUpper;
 	}
-	
+
 	private JTextPane getTpnMessageLower() {
 		if (tpnMessageLower == null) {
-			tpnMessageLower = new JTextPane();
+			tpnMessageLower = ComponentFactory.createTextpane("category_lower_message");
 			tpnMessageLower.setBorder(null);
-			tpnMessageLower.setText("...or create a new one");
 			tpnMessageLower.setOpaque(false);
-			tpnMessageLower.setFont(new Font("Calibri", Font.PLAIN, 16));
 			tpnMessageLower.setEditable(false);
 		}
 		return tpnMessageLower;
 	}
-	
+
 	private JScrollPane getScrollPane() {
 		if (scrollPane == null) {
 			scrollPane = new JScrollPane();

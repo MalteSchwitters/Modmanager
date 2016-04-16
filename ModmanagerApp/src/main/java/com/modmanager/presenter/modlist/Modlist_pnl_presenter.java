@@ -33,7 +33,7 @@ public class Modlist_pnl_presenter extends AbstractPresenter {
 	private static final Logger logger = Logger.getLogger(Modlist_pnl_presenter.class);
 	private static final ImageIcon icoDown = IconSet.getIcon("/down.png", 20);
 	private static final ImageIcon icoUp = IconSet.getIcon("/drop.png", 20);
-
+	
 	private Sorting sortedBy;
 	private Grouping groupedBy = Grouping.NONE;
 	private List<Mod> mods;
@@ -43,16 +43,16 @@ public class Modlist_pnl_presenter extends AbstractPresenter {
 	private String activeFiles;
 	private String inactiveFiles;
 	private String noCategory;
-
+	
 	public Modlist_pnl_presenter(final Modlist_pnl view) {
 		super(view);
 	}
-
+	
 	@Override
 	public Modlist_pnl getView() {
 		return (Modlist_pnl) getObjViewContainer();
 	}
-
+	
 	@Override
 	public void initialize() {
 		try {
@@ -72,7 +72,7 @@ public class Modlist_pnl_presenter extends AbstractPresenter {
 		catch (Exception e) {
 			logger.warn("Some ini preferences for sorting and grouping could not be read.", e);
 		}
-
+		
 		unknownAuthor = ComponentFactory.getInstance().getString("unknown_author");
 		activeFiles = ComponentFactory.getInstance().getString("active_files");
 		inactiveFiles = ComponentFactory.getInstance().getString("inactive_files");
@@ -80,7 +80,7 @@ public class Modlist_pnl_presenter extends AbstractPresenter {
 		officialFiles = ComponentFactory.getInstance().getString("official_files");
 		super.initialize();
 	}
-
+	
 	@Override
 	public void registerActions() {
 		// Grouping
@@ -96,7 +96,7 @@ public class Modlist_pnl_presenter extends AbstractPresenter {
 		getView().getPnlHeader().getBtnInstallationDate()
 				.addActionListener(e -> sortBy(Sorting.INSTALLDATE));
 	}
-
+	
 	private void refresh(final Grouping groupBy) {
 		this.groupedBy = groupBy;
 		saveIniValue(new File(Modmanager_app.getAppPath() + "/Modmanager.ini"),
@@ -104,7 +104,7 @@ public class Modlist_pnl_presenter extends AbstractPresenter {
 		SwingUtilities.invokeLater(() -> scrollToTop());
 		refresh(true);
 	}
-	
+
 	public void refresh(final boolean clearCash) {
 		try {
 			if (clearCash) {
@@ -112,14 +112,14 @@ public class Modlist_pnl_presenter extends AbstractPresenter {
 			}
 			long t = System.currentTimeMillis();
 			Rectangle rec = getView().getPnlMods().getVisibleRect();
-			
+
 			getView().getPnlMods().removeAll();
 			getMods().clear();
 			getMods().addAll(BackendManager.getGameService().getInstalledMods());
 			Collections.sort(getMods(), new ModSorter());
 			ComponentFactory.getInstance().updateText(getView().getBtnGroupBy(),
 					groupedBy.toString());
-			
+
 			if (groupedBy.equals(Grouping.AUTHOR)) {
 				fillModList(groupByAuthor(getMods()));
 			}
@@ -131,7 +131,7 @@ public class Modlist_pnl_presenter extends AbstractPresenter {
 			}
 			getView().getLblCountActive().setText(String.valueOf(calculateActiveMods(getMods())));
 			getView().getLblCountInstalled().setText(String.valueOf(getMods().size()));
-
+			
 			SwingUtilities.invokeLater(() -> getView().getPnlMods().scrollRectToVisible(rec));
 			logger.debug("Refresh Duration: " + (System.currentTimeMillis() - t) + " millis");
 		}
@@ -142,7 +142,7 @@ public class Modlist_pnl_presenter extends AbstractPresenter {
 			dlg.show();
 		}
 	}
-	
+
 	private void showGroupingPopup() {
 		// When first showing the popup it does not have a width. We open it and
 		// close it again, so that we have a width next.
@@ -155,16 +155,16 @@ public class Modlist_pnl_presenter extends AbstractPresenter {
 		int y = getView().getBtnGroupBy().getHeight();
 		getView().getPopGrouping().show(getView().getBtnGroupBy(), x, y);
 	}
-	
+
 	private void scrollToTop() {
 		getView().getSpnModlist().getVerticalScrollBar().setValue(0);
 	}
-
+	
 	private void fillModList(final Map<String, List<Mod>> groups) {
 		Modgroup_pnl_presenter first = null;
 		List<Modgroup_pnl_presenter> middle = new ArrayList<Modgroup_pnl_presenter>();
 		Modgroup_pnl_presenter last = null;
-		
+
 		List<String> categories = new ArrayList<String>(groups.keySet());
 		Collections.sort(categories);
 		for (String groupname : categories) {
@@ -195,11 +195,11 @@ public class Modlist_pnl_presenter extends AbstractPresenter {
 		getView().getPnlMods().repaint();
 		getView().getPnlMods().revalidate();
 	}
-	
+
 	private Map<String, List<Mod>> groupByAuthor(final List<Mod> mods) {
 		Map<String, List<Mod>> groups = new HashMap<String, List<Mod>>();
 		groups.put(unknownAuthor, new ArrayList<Mod>());
-
+		
 		for (Mod mod : mods) {
 			if (mod.getAuthor().equals(Mod.UNKNOWNAUTHOR)) {
 				groups.get(unknownAuthor).add(mod);
@@ -213,12 +213,12 @@ public class Modlist_pnl_presenter extends AbstractPresenter {
 		}
 		return groups;
 	}
-
+	
 	private Map<String, List<Mod>> groupByCategory(final List<Mod> mods) {
 		Map<String, List<Mod>> groups = new HashMap<String, List<Mod>>();
 		groups.put(officialFiles, new ArrayList<Mod>());
 		groups.put(noCategory, new ArrayList<Mod>());
-
+		
 		for (Mod mod : mods) {
 			if (mod.isOfficialFile()) {
 				groups.get(officialFiles).add(mod);
@@ -235,7 +235,7 @@ public class Modlist_pnl_presenter extends AbstractPresenter {
 		}
 		return groups;
 	}
-
+	
 	private Map<String, List<Mod>> groupByNone(final List<Mod> mods) {
 		Map<String, List<Mod>> groups = new HashMap<String, List<Mod>>();
 		groups.put(activeFiles, new ArrayList<Mod>());
@@ -250,7 +250,7 @@ public class Modlist_pnl_presenter extends AbstractPresenter {
 		}
 		return groups;
 	}
-
+	
 	private Modgroup_pnl_presenter createModGroup(final String title, final List<Mod> mods) {
 		Modgroup_pnl_presenter preGroup = new Modgroup_pnl_presenter(new Modgroup_pnl());
 		preGroup.getView().getTpnTitle().setText(title);
@@ -261,7 +261,7 @@ public class Modlist_pnl_presenter extends AbstractPresenter {
 		}
 		return preGroup;
 	}
-
+	
 	private int calculateActiveMods(final List<Mod> allmods) {
 		int i = 0;
 		for (Mod mod : allmods) {
@@ -271,7 +271,7 @@ public class Modlist_pnl_presenter extends AbstractPresenter {
 		}
 		return i;
 	}
-	
+
 	private void sortBy(final Sorting sort) {
 		if (sort.equals(sortedBy)) {
 			// Down -> Up
@@ -311,14 +311,14 @@ public class Modlist_pnl_presenter extends AbstractPresenter {
 				"Application Properties", "updownwards", String.valueOf(sort.isUpwards()));
 		refresh(true);
 	}
-
+	
 	private List<Mod> getMods() {
 		if (mods == null) {
 			mods = new ArrayList<Mod>();
 		}
 		return mods;
 	}
-
+	
 	private Map<Sorting, JButton> getMapSortButtons() {
 		if (mapSortButtons == null) {
 			mapSortButtons = new HashMap<Sorting, JButton>();
@@ -330,35 +330,35 @@ public class Modlist_pnl_presenter extends AbstractPresenter {
 		}
 		return mapSortButtons;
 	}
-	
+
 	public enum Sorting {
 		AUTHOR, FILENAME, LOADORDER, INSTALLDATE;
-		
+
 		private boolean upwards;
 		private boolean downwards;
-
+		
 		private Sorting() {
 			downwards = false;
 			upwards = false;
 		}
-
+		
 		public boolean isUpwards() {
 			return upwards;
 		}
-
+		
 		public boolean isDownwards() {
 			return downwards;
 		}
-		
+
 		public void setUpwards(final boolean upwards) {
 			this.upwards = upwards;
 		}
-		
+
 		public void setDownwards(final boolean downwards) {
 			this.downwards = downwards;
 		}
 	}
-	
+
 	private class ModSorter implements Comparator<Mod> {
 		
 		

@@ -46,25 +46,25 @@ public class Settings_pnl_presenter extends AbstractPresenter {
 	private Profile profile;
 	private String selectedBackground;
 	private boolean uivalid;
-
+	
 	public Settings_pnl_presenter(final Settings_pnl view) {
 		super(view);
 	}
-
+	
 	@Override
 	public Settings_pnl getView() {
 		return (Settings_pnl) getObjViewContainer();
 	}
-
+	
 	@Override
 	public void registerActions() {
 		getView().getBtnCancel().addActionListener(e -> firePropertyChange_Refresh(
 				BackendManager.getProfilesService().getActiveProfile()));
 		getView().getBtnSave().addActionListener(e -> saveProfile());
-
+		
 		getView().getMniUseBackground().addActionListener(e -> selectBackground_Popup());
 		getView().getMniRemoveBackground().addActionListener(e -> deleteBackground_Popup());
-
+		
 		getView().getTxfInstallDir().addFocusListener(new ValidationListener());
 		getView().getTxfExe().addFocusListener(new ValidationListener());
 		getView().getBtnBrowseBackgrounds().addActionListener(e -> browseBackground());
@@ -73,14 +73,14 @@ public class Settings_pnl_presenter extends AbstractPresenter {
 				.addActionListener(e -> browseInstallFolder(getView().getTxfInstallDir()));
 		getView().getCmbGame().addActionListener(e -> loadDefaults());
 	}
-	
+
 	public void createProfile() {
 		profile = new Profile();
 		// This will set the cmb value and also trigger the ActionListener
 		// calling the loadDefaults Method
 		getView().getCmbGame().setSelectedIndex(0);
 	}
-
+	
 	private void loadDefaults() {
 		Game selectedGame = (Game) getView().getCmbGame().getSelectedItem();
 		if (!selectedGame.equals(profile.getGame())) {
@@ -100,7 +100,7 @@ public class Settings_pnl_presenter extends AbstractPresenter {
 			}
 		}
 	}
-
+	
 	public void loadProfile(final Profile prof) {
 		profile = prof;
 		getView().getTxfProfilename().setText(profile.getProfileName());
@@ -113,7 +113,7 @@ public class Settings_pnl_presenter extends AbstractPresenter {
 		loadBackgrounds(profile.getBackground());
 		validateAll();
 	}
-	
+
 	private void saveProfile() {
 		if (uivalid) {
 			try {
@@ -132,40 +132,35 @@ public class Settings_pnl_presenter extends AbstractPresenter {
 			}
 		}
 	}
-
+	
 	private void loadBackgrounds(final String selected) {
-		try {
-			getView().getPnlBackgrounds().removeAll();
-			File backgrounddir = new File(getClass().getResource("/Icons/Backgrounds").toURI());
-			backgrounds.clear();
-			for (File file : backgrounddir.listFiles()) {
-				if (file.getName().endsWith("_thumb.png") || file.getName().endsWith("_thumb.jpg")
-						|| file.getName().endsWith("_thumb.jpeg")
-						|| file.getName().endsWith("_thumb.gif")) {
-					addImageThumb(file);
-				}
-				else {
-					createImageThumb(file);
-				}
+		getView().getPnlBackgrounds().removeAll();
+		File backgrounddir = new File(getAppPath() + "Icons/Backgrounds");
+		backgrounds.clear();
+		for (File file : backgrounddir.listFiles()) {
+			if (file.getName().endsWith("_thumb.png") || file.getName().endsWith("_thumb.jpg")
+					|| file.getName().endsWith("_thumb.jpeg")
+					|| file.getName().endsWith("_thumb.gif")) {
+				addImageThumb(file);
 			}
-			getView().getPnlBackgrounds().repaint();
-			getView().getPnlBackgrounds().revalidate();
-			if (selected != null) {
-				selectBackground(selected);
+			else {
+				createImageThumb(file);
 			}
 		}
-		catch (URISyntaxException e) {
-			logger.error("Failed to load Background thumbs.", e);
+		getView().getPnlBackgrounds().repaint();
+		getView().getPnlBackgrounds().revalidate();
+		if (selected != null) {
+			selectBackground(selected);
 		}
 	}
-	
+
 	private void addImageThumb(final File file) {
 		// Filename of the large image, thumbs are for better
 		// performance and precreated
 		StringBuilder stbImg = new StringBuilder();
 		stbImg.append(file.getName().substring(0, file.getName().indexOf("_thumb")));
 		stbImg.append(file.getName().substring(file.getName().lastIndexOf('.')));
-
+		
 		JButton btn = new JButton(new ImageIcon(file.getPath()));
 		btn.setUI(new BasicButtonUI());
 		btn.setToolTipText(stbImg.toString());
@@ -174,7 +169,7 @@ public class Settings_pnl_presenter extends AbstractPresenter {
 		getView().getPnlBackgrounds().add(btn, 0);
 		backgrounds.put(stbImg.toString(), btn);
 	}
-	
+
 	private void createImageThumb(final File file) {
 		try {
 			int suffixindex = file.getPath().lastIndexOf('.');
@@ -187,10 +182,10 @@ public class Settings_pnl_presenter extends AbstractPresenter {
 				double h = 100;
 				double w = 180;
 				Image img = imgIn.getScaledInstance((int) w, (int) h, Image.SCALE_SMOOTH);
-
+				
 				BufferedImage imgOut = new BufferedImage((int) w, (int) h, imgIn.getType());
 				imgOut.getGraphics().drawImage(img, 0, 0, null);
-
+				
 				ImageIO.write(imgOut, suffix.substring(1), outputfile);
 				addImageThumb(outputfile);
 			}
@@ -199,7 +194,7 @@ public class Settings_pnl_presenter extends AbstractPresenter {
 			logger.error("Could not create Thumbnail for Image: " + file.getPath(), e);
 		}
 	}
-
+	
 	private void selectBackground(final String name) {
 		for (JButton btn : backgrounds.values()) {
 			btn.setBorder(new LineBorder(Color.LIGHT_GRAY, 2));
@@ -209,7 +204,7 @@ public class Settings_pnl_presenter extends AbstractPresenter {
 			selectedBackground = name;
 		}
 	}
-
+	
 	private void selectBackground_Popup() {
 		Component inv = getView().getPopBackgrounds().getInvoker();
 		for (String bgname : backgrounds.keySet()) {
@@ -219,13 +214,13 @@ public class Settings_pnl_presenter extends AbstractPresenter {
 			}
 		}
 	}
-
+	
 	private void deleteBackground_Popup() {
 		Component inv = getView().getPopBackgrounds().getInvoker();
 		for (String bgname : backgrounds.keySet()) {
 			if (inv.equals(backgrounds.get(bgname))) {
 				if (!bgname.equals(selectedBackground)) {
-					String path = getClass().getResource("/Icons/Backgrounds").getPath();
+					String path = getAppPath() + "Icons/Backgrounds";
 					String suffix = bgname.substring(bgname.indexOf('.'));
 					String thumbname = bgname.substring(0, bgname.indexOf('.')) + "_thumb" + suffix;
 					File flarge = new File(path + "/" + bgname);
@@ -243,7 +238,7 @@ public class Settings_pnl_presenter extends AbstractPresenter {
 			}
 		}
 	}
-
+	
 	private void browseInstallFolder(final JTextComponent target) {
 		File f = new File(target.getText());
 		JFileChooser fc = new JFileChooser();
@@ -256,7 +251,7 @@ public class Settings_pnl_presenter extends AbstractPresenter {
 			target.setText(fc.getSelectedFile().getPath());
 		}
 	}
-	
+
 	private void browseExe(final JTextComponent target) {
 		File f = new File(target.getText());
 		JFileChooser fc = new JFileChooser();
@@ -269,7 +264,7 @@ public class Settings_pnl_presenter extends AbstractPresenter {
 			target.setText(fc.getSelectedFile().getPath());
 		}
 	}
-
+	
 	private void browseBackground() {
 		try {
 			JFileChooser fc = new JFileChooser();
@@ -280,7 +275,7 @@ public class Settings_pnl_presenter extends AbstractPresenter {
 				int i = 1;
 				String suffix = fc.getSelectedFile().getName();
 				suffix = suffix.substring(suffix.lastIndexOf('.'));
-				String path = getClass().getResource("/Icons/Backgrounds/").toURI().toString();
+				String path = getAppPath() + "Icons/Backgrounds/";
 				path = path.substring(path.indexOf(":") + 1);
 				File out = new File(path + "background" + df00.format(i) + suffix);
 				while (out.exists()) {
@@ -295,7 +290,7 @@ public class Settings_pnl_presenter extends AbstractPresenter {
 			logger.error("Failed to copy add new background", e);
 		}
 	}
-	
+
 	private boolean validateAll() {
 		uivalid = true;
 		if (!validateFileExists(getView().getTxfExe())) {
@@ -306,7 +301,7 @@ public class Settings_pnl_presenter extends AbstractPresenter {
 		}
 		return uivalid;
 	}
-
+	
 	private boolean validateFileExists(final JTextComponent comp) {
 		if (new File(comp.getText()).exists()) {
 			comp.setBackground(defaultBackground);
@@ -315,7 +310,7 @@ public class Settings_pnl_presenter extends AbstractPresenter {
 		comp.setBackground(invalidBackground);
 		return false;
 	}
-
+	
 	private class ValidationListener extends FocusAdapter {
 		
 		

@@ -30,16 +30,16 @@ public class Modmanager_frm_presenter extends AbstractPresenter {
 	private Image background;
 	private Modlist_pnl_presenter preModlist;
 	private Settings_pnl_presenter preSettings;
-	
+
 	public Modmanager_frm_presenter(final Modmanager_frm objViewContainer) {
 		super(objViewContainer);
 	}
-
+	
 	@Override
 	public Modmanager_frm getView() {
 		return (Modmanager_frm) getObjViewContainer();
 	}
-
+	
 	@Override
 	public void initialize() {
 		// Not yet implemented
@@ -48,7 +48,7 @@ public class Modmanager_frm_presenter extends AbstractPresenter {
 		getView().getPnlView().add(getPreModlist().getView(), BorderLayout.CENTER);
 		super.initialize();
 	}
-	
+
 	@Override
 	public void registerActions() {
 		getView().getMniPlay().addActionListener(e -> startGame());
@@ -66,7 +66,7 @@ public class Modmanager_frm_presenter extends AbstractPresenter {
 		getView().getMniNewProfile().addActionListener(e -> createProfile());
 		getPreSettings().addPropertyChangeListener(e -> loadProfile((Profile) e.getNewValue()));
 	}
-	
+
 	private Modlist_pnl_presenter getPreModlist() {
 		if (preModlist == null) {
 			preModlist = new Modlist_pnl_presenter(new Modlist_pnl());
@@ -74,7 +74,7 @@ public class Modmanager_frm_presenter extends AbstractPresenter {
 		}
 		return preModlist;
 	}
-
+	
 	private Settings_pnl_presenter getPreSettings() {
 		if (preSettings == null) {
 			preSettings = new Settings_pnl_presenter(new Settings_pnl());
@@ -82,7 +82,7 @@ public class Modmanager_frm_presenter extends AbstractPresenter {
 		}
 		return preSettings;
 	}
-	
+
 	private void loadProfileList(final Profile activeProfile) {
 		getView().getPopChangeProfile().removeAll();
 		for (Profile prof : BackendManager.getProfilesService().getProfiles()) {
@@ -95,7 +95,7 @@ public class Modmanager_frm_presenter extends AbstractPresenter {
 		}
 		getView().getPopChangeProfile().add(getView().getMniNewProfile());
 	}
-
+	
 	private void showProfiles() {
 		// When first showing the popup it does not have a width. We open it and
 		// close it again, so that we have a width next.
@@ -108,45 +108,51 @@ public class Modmanager_frm_presenter extends AbstractPresenter {
 		int y = getView().getBtnChangeProfile().getHeight();
 		getView().getPopChangeProfile().show(getView().getBtnChangeProfile(), x, y);
 	}
-
+	
 	public void loadProfile(final Profile prof) {
-		logger.debug("Loading profile " + prof.getProfileName());
-		// Backend stuff
-		BackendManager.getProfilesService().setActiveProfile(prof);
-		BackendManager.initializeForGame(prof.getGame());
-		saveIniValue(new File(Modmanager_app.getAppPath() + "/Modmanager.ini"),
-				"Application Properties", "profile", prof.getProfileName());
-		// Update UI
-		getView().getPnlView().removeAll();
-		getView().getPnlView().add(getPreModlist().getView());
-		getView().getBtnChangeProfile().setText(prof.getProfileName());
-		background = IconSet.getBackground(prof.getBackground());
-		if (background != null) {
-			getView().getLblBackground().setIcon(new ImageIcon(background));
+		if (prof != null) {
+			logger.debug("Loading profile " + prof.getProfileName());
+			// Backend stuff
+			BackendManager.getProfilesService().setActiveProfile(prof);
+			BackendManager.initializeForGame(prof.getGame());
+			saveIniValue(new File(Modmanager_app.getAppPath() + "/Modmanager.ini"),
+					"Application Properties", "profile", prof.getProfileName());
+			// Update UI
+			getView().getPnlView().removeAll();
+			getView().getPnlView().add(getPreModlist().getView());
+			getView().getBtnChangeProfile().setText(prof.getProfileName());
+			background = IconSet.getBackground(prof.getBackground());
+			if (background != null) {
+				getView().getLblBackground().setIcon(new ImageIcon(background));
+			}
+			getView().setTitle(prof.getGame().toString() + " Modmanager");
+			// Update Icons
+			getView().getBtnStartGame().setIcon(IconSet.getSetDarkIcon("play.png", 24));
+			getView().getBtnStartGame().setRolloverIcon(IconSet.getSetRolloverIcon("play.png", 24));
+			getView().getBtnBrowseComunity().setIcon(IconSet.getSetDarkIcon("forum.png", 24));
+			getView().getBtnBrowseComunity()
+					.setRolloverIcon(IconSet.getSetRolloverIcon("forum.png", 24));
+			getView().getBtnBrowseNexusmods().setIcon(IconSet.getSetDarkIcon("search.png", 24));
+			getView().getBtnBrowseNexusmods()
+					.setRolloverIcon(IconSet.getSetRolloverIcon("search.png", 24));
+			getView().getBtnOpenGameFolder().setIcon(IconSet.getSetDarkIcon("folder.png", 24));
+			getView().getBtnOpenGameFolder()
+					.setRolloverIcon(IconSet.getSetRolloverIcon("folder.png", 24));
+			getView().getBtnRefresh().setIcon(IconSet.getSetDarkIcon("refresh.png", 24));
+			getView().getBtnRefresh()
+					.setRolloverIcon(IconSet.getSetRolloverIcon("refresh.png", 24));
+			getView().getBtnOptions().setIcon(IconSet.getSetDarkIcon("settings.png", 24));
+			getView().getBtnOptions()
+					.setRolloverIcon(IconSet.getSetRolloverIcon("settings.png", 24));
+			
+			getView().getBtnBrowseComunity().setVisible(prof.getComunity() != null);
+			getView().getBtnBrowseNexusmods().setVisible(prof.getModstore() != null);
+			
+			getPreModlist().refresh(true);
+			getView().repaint();
+			getView().revalidate();
+			loadProfileList(prof);
 		}
-		getView().setTitle(prof.getGame().toString() + " Modmanager");
-		// Update Icons
-		getView().getBtnStartGame().setIcon(IconSet.getDarkIcon("play.png", 24));
-		getView().getBtnStartGame().setRolloverIcon(IconSet.getRolloverIcon("play.png", 24));
-		getView().getBtnBrowseComunity().setIcon(IconSet.getDarkIcon("forum.png", 24));
-		getView().getBtnBrowseComunity().setRolloverIcon(IconSet.getRolloverIcon("forum.png", 24));
-		getView().getBtnBrowseNexusmods().setIcon(IconSet.getDarkIcon("search.png", 24));
-		getView().getBtnBrowseNexusmods()
-				.setRolloverIcon(IconSet.getRolloverIcon("search.png", 24));
-		getView().getBtnOpenGameFolder().setIcon(IconSet.getDarkIcon("folder.png", 24));
-		getView().getBtnOpenGameFolder().setRolloverIcon(IconSet.getRolloverIcon("folder.png", 24));
-		getView().getBtnRefresh().setIcon(IconSet.getDarkIcon("refresh.png", 24));
-		getView().getBtnRefresh().setRolloverIcon(IconSet.getRolloverIcon("refresh.png", 24));
-		getView().getBtnOptions().setIcon(IconSet.getDarkIcon("settings.png", 24));
-		getView().getBtnOptions().setRolloverIcon(IconSet.getRolloverIcon("settings.png", 24));
-		
-		getView().getBtnBrowseComunity().setVisible(prof.getComunity() != null);
-		getView().getBtnBrowseNexusmods().setVisible(prof.getModstore() != null);
-
-		getPreModlist().refresh(true);
-		getView().repaint();
-		getView().revalidate();
-		loadProfileList(prof);
 	}
 	
 	private void editProfile() {
@@ -156,16 +162,16 @@ public class Modmanager_frm_presenter extends AbstractPresenter {
 		getView().getPnlView().repaint();
 		getView().getPnlView().revalidate();
 	}
-
+	
 	public void createProfile() {
 		getView().getPnlView().removeAll();
 		getView().getPnlView().add(getPreSettings().getView());
 		getPreSettings().createProfile();
 		getView().getPnlView().repaint();
 		getView().getPnlView().revalidate();
-
+		
 	}
-
+	
 	private void startGame() {
 		Profile profile = BackendManager.getProfilesService().getActiveProfile();
 		try {
@@ -176,7 +182,7 @@ public class Modmanager_frm_presenter extends AbstractPresenter {
 			logger.error("Failed to start " + profile.getGame().toString(), e);
 		}
 	}
-
+	
 	private void openInstallationFolder() {
 		Profile profile = BackendManager.getProfilesService().getActiveProfile();
 		try {
@@ -186,7 +192,7 @@ public class Modmanager_frm_presenter extends AbstractPresenter {
 			logger.error("Failed to open " + profile.getInstalldir(), e);
 		}
 	}
-	
+
 	private void browseModStore() {
 		Profile profile = BackendManager.getProfilesService().getActiveProfile();
 		try {
@@ -196,7 +202,7 @@ public class Modmanager_frm_presenter extends AbstractPresenter {
 			logger.error("Failed to open " + profile.getModstore(), e);
 		}
 	}
-
+	
 	private void browseComunity() {
 		Profile profile = BackendManager.getProfilesService().getActiveProfile();
 		try {
