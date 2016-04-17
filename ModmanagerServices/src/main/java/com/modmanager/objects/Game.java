@@ -3,7 +3,7 @@ package com.modmanager.objects;
 public enum Game {
 	// FALLOUT3("Fallout 3"),
 	// FALLOUTNV("Fallout New Vegas"),
-	FALLOUT4("Fallout 4"), SKYRIM("Skyrim");
+	FALLOUT4("Fallout 4"), FALLOUT4_BETA("Fallout 4 Beta"), SKYRIM("Skyrim");
 
 	private String name;
 	
