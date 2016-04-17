@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<profile>
+  <game>Fallout 4 Beta</game>
+  <exe>Fallout4Launcher.exe</exe>
+  <installdir>D:\Steam\steamapps\common\Fallout 4\</installdir>
+  <appdatadir>C:\Users\Malte/AppData\Local\Fallout4\</appdatadir>
+  <modstore>http://www.nexusmods.com/fallout4/?</modstore>
+  <comunity>http://forums.nexusmods.com/index.php?c=3485,3500</comunity>
+  <iconset>Default</iconset>
+  <background>background01.jpg</background>
+</profile>
