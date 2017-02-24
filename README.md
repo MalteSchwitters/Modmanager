@@ -12,6 +12,3 @@ In order to use the application you need **Java JRE 8**. You can find out your J
 http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html
 
 This app is portable, which means you can drop it wherever you want in your file system and don't need to install it. To start the application just double click on the *StartModmanager.bat*. The *StartModmanagerCmd.bat* starts the application and leaves the console open and is meant for debugging.
-
-## Support ##
-Please use the BitBucket issue tracker for technical support and feature requests.
